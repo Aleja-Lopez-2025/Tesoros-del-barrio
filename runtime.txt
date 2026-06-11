@@ -1,0 +1,3 @@
+# runtime.txt para Heroku
+# Especifica la versión de Python a usar
+python-3.11.1

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - DEBUG=false
+    volumes:
+      - .:/app
+    command: streamlit run app.py
+
+# Para usar:
+# 1. Copia .env.example a .env y completa los valores
+# 2. Ejecuta: docker-compose up
+# 3. Abre: http://localhost:8501
