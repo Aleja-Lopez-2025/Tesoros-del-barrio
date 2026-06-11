@@ -42,6 +42,41 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# 🔐 VALIDACIÓN CRÍTICA: Verificar variables de entorno
+import os
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+if not SUPABASE_URL or not SUPABASE_KEY:
+    st.error("""
+    # 🔴 Error de Configuración
+    
+    ### Falta configurar las variables de entorno
+    
+    **En Streamlit Cloud:**
+    1. Ve a tu app → Haz click en **⋮** (arriba a la derecha)
+    2. Selecciona **"Manage app"**
+    3. Ve a **Settings → Secrets**
+    4. Agrega exactamente esto (reemplaza con TUS valores):
+    ```
+    SUPABASE_URL = "tu-url-aqui"
+    SUPABASE_KEY = "tu-clave-api-aqui"
+    ```
+    5. Haz click en **Save**
+    6. La app se redeployará automáticamente
+    
+    ---
+    
+    **Dónde obtener tus credenciales:**
+    - Ve a tu dashboard de Supabase
+    - Settings → Project Settings
+    - Copia: Project URL → SUPABASE_URL
+    - Copia: anon key → SUPABASE_KEY
+    
+    Si ves este error localmente, copia `.env.example` a `.env` y completa los valores.
+    """)
+    st.stop()
+
 # Inicializar session state
 inicializar_session_state()
 
