@@ -45,15 +45,16 @@ def get_supabase_client() -> Client:
 def verificar_conexion() -> bool:
     """
     Verifica la conexión con Supabase.
+    Simplemente valida que el cliente pueda ser creado con las credenciales.
     
     Returns:
         bool: True si la conexión es exitosa, False en caso contrario
     """
     try:
         client = get_supabase_client()
-        # Intenta hacer una consulta simple
-        response = client.table("usuarios").select("count", count="exact").limit(1).execute()
-        return True
+        # Solo verificamos que el cliente fue creado exitosamente
+        # No hacemos queries porque las tablas podrían no existir aún
+        return client is not None
     except Exception as e:
         print(f"Error al verificar conexión con Supabase: {e}")
         return False

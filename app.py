@@ -47,33 +47,36 @@ import os
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
+# Debug: mostrar si las variables existen (sin mostrar los valores reales)
+debug_url_exists = bool(SUPABASE_URL)
+debug_key_exists = bool(SUPABASE_KEY)
+
 if not SUPABASE_URL or not SUPABASE_KEY:
-    st.error("""
-    # 🔴 Error de Configuración
+    st.error(f"""
+    # 🔴 Error de Configuración - Variables de Entorno Faltantes
     
-    ### Falta configurar las variables de entorno
+    ### Estado Actual:
+    - SUPABASE_URL configurado: **{"✅ SÍ" if debug_url_exists else "❌ NO"}**
+    - SUPABASE_KEY configurado: **{"✅ SÍ" if debug_key_exists else "❌ NO"}**
+    
+    ### Solución:
     
     **En Streamlit Cloud:**
-    1. Ve a tu app → Haz click en **⋮** (arriba a la derecha)
+    1. Ve a tu app → Click en **⋮** (arriba a la derecha)
     2. Selecciona **"Manage app"**
     3. Ve a **Settings → Secrets**
-    4. Agrega exactamente esto (reemplaza con TUS valores):
+    4. Agrega esto (reemplaza con TUS valores reales):
     ```
-    SUPABASE_URL = "tu-url-aqui"
-    SUPABASE_KEY = "tu-clave-api-aqui"
+    SUPABASE_URL = "https://tuproyecto.supabase.co"
+    SUPABASE_KEY = "tu-anon-key-aqui"
     ```
     5. Haz click en **Save**
-    6. La app se redeployará automáticamente
+    6. **ESPERA 1-2 MINUTOS** a que la app se redeploy automáticamente
     
-    ---
-    
-    **Dónde obtener tus credenciales:**
-    - Ve a tu dashboard de Supabase
-    - Settings → Project Settings
-    - Copia: Project URL → SUPABASE_URL
-    - Copia: anon key → SUPABASE_KEY
-    
-    Si ves este error localmente, copia `.env.example` a `.env` y completa los valores.
+    **Si lo hiciste correctamente pero aún ves este error:**
+    - Haz click en **⋮ → Reboot app**
+    - Espera 30 segundos
+    - Recarga la página en tu navegador (F5 o Cmd+R)
     """)
     st.stop()
 
@@ -847,17 +850,31 @@ def main():
         # Verificar conexión con Supabase
         if not verificar_conexion():
             st.error("""
-            ❌ **Error de conexión**
+            ❌ **Error de conexión con Supabase**
             
-            No se pudo conectar con Supabase. Por favor:
-            1. Verifica que tienes un archivo `.env` con las variables `SUPABASE_URL` y `SUPABASE_KEY`
-            2. Copia `.env.example` a `.env` y completa los valores
-            3. Asegúrate que las credenciales sean correctas
+            ### Posibles soluciones:
             
-            Para obtener tus credenciales:
-            - Visita https://supabase.com
-            - Crea un nuevo proyecto
-            - Copia la URL y la anon key
+            **Opción 1: En Streamlit Cloud**
+            1. Abre tu app → Click en **⋮** (menú arriba a la derecha)
+            2. Selecciona **"Manage app"**
+            3. Ve a **Settings → Secrets**
+            4. Verifica que existan estas variables (sin borrar ni modificar):
+               ```
+               SUPABASE_URL = "tu-url"
+               SUPABASE_KEY = "tu-clave"
+               ```
+            5. Si no existen, agrégalas
+            6. Haz click en **Save**
+            7. Espera a que la app se redeploy automáticamente
+            
+            **Opción 2: Verifica que las credenciales sean correctas**
+            - Ve a tu dashboard de Supabase
+            - Copia la URL del proyecto (en Project Settings)
+            - Copia la anon key (en Project Settings → API)
+            - Asegúrate de usar la **anon key**, no la service role key
+            
+            **Opción 3: Reinicia la app**
+            - En Streamlit Cloud, haz click en **⋮ → Reboot app**
             """)
             st.stop()
         
