@@ -15,13 +15,6 @@ load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-# Validación de variables de entorno
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise ValueError(
-        "Las variables de entorno SUPABASE_URL y SUPABASE_KEY son requeridas. "
-        "Copia .env.example a .env y completa con tus valores."
-    )
-
 
 def get_supabase_client() -> Client:
     """
@@ -33,6 +26,19 @@ def get_supabase_client() -> Client:
     Raises:
         ValueError: Si falta alguna variable de entorno
     """
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        raise ValueError(
+            "❌ ERROR: Variables de entorno faltantes\n\n"
+            "Necesitas configurar estas variables en Streamlit Cloud:\n"
+            "• SUPABASE_URL\n"
+            "• SUPABASE_KEY\n\n"
+            "Pasos:\n"
+            "1. Ve a tu app en Streamlit Cloud\n"
+            "2. Haz clic en 'Manage app' (arriba a la derecha)\n"
+            "3. Ve a la sección 'Secrets'\n"
+            "4. Añade tus claves de Supabase\n"
+            "5. Haz clic en 'Save'"
+        )
     return create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
